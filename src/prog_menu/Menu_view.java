@@ -28,7 +28,7 @@ public class Menu_view extends Frame implements ActionListener,WindowListener{
 	Menu graph;
 	MenuItem graph1;
 	MenuItem graph2;
-	Panel cardPanel, card1, card2;
+	Panel cardPanel, card[];
 
 	public Menu_view()  {
 		addWindowListener(this);
@@ -44,57 +44,43 @@ public class Menu_view extends Frame implements ActionListener,WindowListener{
 		//カードパネルの作成
 		cardPanel = new Panel();
 		cardPanel.setLayout(new CardLayout());
-		card1 = new Panel();
-		//グラフ1をcard1に追加
-		DefaultCategoryDataset data1 = new DefaultCategoryDataset();
-		data1.addValue(300, "USA", "2005");
-		data1.addValue(500, "USA", "2006");
-		data1.addValue(120, "USA", "2007");
-		data1.addValue(200, "China", "2005");
-		data1.addValue(400, "China", "2006");
-		data1.addValue(320, "China", "2007");
+		card = new Panel[2];
+		for(int i = 0; i < card.length; i++) card[i] = new Panel();
+		//データ作成
+		DefaultCategoryDataset data[] = new DefaultCategoryDataset[2];
+		data[0] = new DefaultCategoryDataset();
+		data[0].addValue(300, "USA", "2005");
+		data[0].addValue(500, "USA", "2006");
+		data[0].addValue(120, "USA", "2007");
+		data[0].addValue(200, "China", "2005");
+		data[0].addValue(400, "China", "2006");
+		data[0].addValue(320, "China", "2007");
+		data[1] = new DefaultCategoryDataset();
+		data[1].addValue(500, "USA", "2005");
+		data[1].addValue(300, "USA", "2006");
+		data[1].addValue(620, "USA", "2007");
+		data[1].addValue(300, "China", "2005");
+		data[1].addValue(200, "China", "2006");
+		data[1].addValue(820, "China", "2007");
 
-	    JFreeChart chart1 = 
-	      ChartFactory.createLineChart("Import Volume",
-	                                   "Year",
-	                                   "Ton",
-	                                   data1,
-	                                   PlotOrientation.VERTICAL,
-	                                   true,
-	                                   false,
-	                                   false);
-	    ChartPanel cpanel1 = new ChartPanel(chart1);
-	    card1.add(cpanel1, BorderLayout.CENTER);
-		//card1.add(new Button("ABC"));
-		//card1.add(new Button("XYZ"));
-		card2 = new Panel();
-		//グラフ1をcard2に追加
-		DefaultCategoryDataset data2 = new DefaultCategoryDataset();
-		data2.addValue(500, "USA", "2005");
-		data2.addValue(300, "USA", "2006");
-		data2.addValue(620, "USA", "2007");
-		data2.addValue(300, "China", "2005");
-		data2.addValue(200, "China", "2006");
-		data2.addValue(820, "China", "2007");
+		JFreeChart chart[] = new JFreeChart[2];
+		this.setCard(chart[0], data[0], card[0]);
+		this.setCard(chart[1], data[1], card[1]);
+		
 
-		JFreeChart chart2 = ChartFactory.createLineChart("Import Volume",
-				"Year",
-			    "Ton",
-			    data2,
-			    PlotOrientation.VERTICAL,
-			    true,
-			    false,
-			    false);
-		ChartPanel cpanel2 = new ChartPanel(chart2);
-		card2.add(cpanel2, BorderLayout.CENTER);
-		//card2.add(new TextField("Test field on Card2"));
-		cardPanel.add(card1, "Card1");
-	    cardPanel.add(card2, "Card2");
+		cardPanel.add(card[0], "Card1");
+	    cardPanel.add(card[1], "Card2");
 	    add(cardPanel);
 		
 		//Listenerの追加
 		graph1.addActionListener(this);
 		graph2.addActionListener(this);
+	}
+	
+	public void setCard(JFreeChart chart, DefaultCategoryDataset data, Panel card) {
+		chart = ChartFactory.createLineChart("Import Volume","Year","Ton",data,PlotOrientation.VERTICAL,true,false,false);
+		ChartPanel cpanel = new ChartPanel(chart);
+		card.add(cpanel, BorderLayout.CENTER);
 	}
 
 	@Override
